@@ -20,6 +20,8 @@ def get_conversations(db: Session, user_id: int, skip: int, limit: int):
 
 def get_conversation(db: Session, user_id: int, conversation_id: int):
     conversation = db.query(Conversation).filter(Conversation.id == conversation_id, Conversation.user_id == user_id).first()
+    if conversation is None:
+        return None
     return conversation
 
 def update_conversation(db: Session, user_id: int, conversation_id: int, title: str):

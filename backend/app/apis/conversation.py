@@ -23,7 +23,10 @@ def get_conversations(db: Session = Depends(get_db), skip: int = 0, limit: int =
 
 @router.get("/{conversation_id}", response_model=ConversationRead)
 def get_conversation(conversation_id: int, db: Session = Depends(get_db)):
-    return conversation_service.get_conversation(db=db, user_id=1, conversation_id=conversation_id)
+    conversation = conversation_service.get_conversation(db=db, user_id=1, conversation_id=conversation_id)
+    if conversation is None:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return conversation
 
 @router.patch("/{conversation_id}", response_model=ConversationRead)
 def update_conversation(data: ConversationUpdate, conversation_id: int, db: Session = Depends(get_db)):
